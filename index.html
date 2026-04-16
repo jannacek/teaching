@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AT-LAB II — Teaching as Artistic Research | Agustín Martínez Caram</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f1ec;
+  --bg-warm:#efe9e1;
+  --ink:#1a1814;
+  --muted:#8a8479;
+  --light:#b5ada3;
+  --accent:#c2785c;
+  --accent2:#9e7b5a;
+  --accent3:#7a9bac;
+  --surface:rgba(255,255,255,0.55);
+  --surface2:rgba(255,255,255,0.35);
+  --border:rgba(26,24,20,0.1);
+  --border2:rgba(26,24,20,0.06);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --radius:11px;
+  --radius-lg:16px;
+  --max:1200px;
+  --nav-h:64px;
+}
+html{scroll-behavior:smooth;font-size:18px}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ─── FLOATING GRAIN TEXTURE ─── */
+body::after{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:9999;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--nav-h);
+  background:rgba(245,241,236,0.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1.5rem,4vw,3rem);
+  transition:box-shadow .4s,background .4s;
+}
+nav.scrolled{box-shadow:0 1px 30px rgba(26,24,20,0.08);background:rgba(245,241,236,0.95)}
+.nav-brand{font-family:var(--serif);font-size:1.15rem;font-weight:500;letter-spacing:.02em;color:var(--ink);text-decoration:none;transition:color .3s}
+.nav-brand:hover{color:var(--accent)}
+.nav-brand span{color:var(--accent);font-weight:600}
+.nav-links{display:flex;gap:0.2rem;align-items:center}
+.nav-links a{
+  font-size:.75rem;font-weight:500;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  padding:.45rem .85rem;border-radius:8px;
+  transition:all .3s cubic-bezier(.25,.1,.25,1);
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:.2rem;left:50%;width:0;height:1.5px;
+  background:var(--accent);transition:all .3s;transform:translateX(-50%);
+}
+.nav-links a:hover::after,.nav-links a.active::after{width:60%}
+.nav-links a:hover,.nav-links a.active{color:var(--ink);background:var(--surface)}
+@media(max-width:900px){
+  .nav-links{display:none}
+}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;
+  padding:calc(var(--nav-h) + 4rem) 2rem 6rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(194,120,92,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 70%, rgba(122,155,172,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(158,123,90,0.04) 0%, transparent 60%);
+  pointer-events:none;
+  animation:heroShift 20s ease-in-out infinite alternate;
+}
+@keyframes heroShift{
+  0%{transform:scale(1) translate(0,0)}
+  100%{transform:scale(1.05) translate(-1%,1%)}
+}
+.hero-label{
+  font-family:var(--sans);font-size:.77rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.hero-label::before,.hero-label::after{content:'';width:2rem;height:1px;background:var(--accent);opacity:.5}
+.hero h1{
+  font-family:var(--serif);
+  font-size:clamp(2.8rem,7vw,5.5rem);
+  font-weight:300;
+  line-height:1.08;
+  letter-spacing:-.02em;
+  max-width:900px;
+  margin-bottom:1.5rem;
+}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.hero-sub{
+  font-size:1.12rem;color:var(--muted);max-width:600px;line-height:1.7;
+  margin-bottom:2.5rem;
+}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:center;
+  font-size:.84rem;color:var(--light);
+}
+.hero-meta span{display:flex;align-items:center;gap:.4rem}
+.hero-meta strong{color:var(--muted);font-weight:500}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:var(--light);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{
+  0%,100%{opacity:.6;transform:translateX(-50%) translateY(0)}
+  50%{opacity:1;transform:translateX(-50%) translateY(4px)}
+}
+.hero-scroll::after{
+  content:'';width:1px;height:2.5rem;
+  background:linear-gradient(to bottom,var(--light),transparent);
+}
+
+/* ─── SECTIONS ─── */
+section{padding:6rem clamp(1.5rem,5vw,4rem)}
+.section-inner{max-width:var(--max);margin:0 auto}
+.section-label{
+  font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.8rem;
+}
+.section-title{
+  font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:400;
+  line-height:1.15;margin-bottom:1rem;
+}
+.section-lead{font-size:1.07rem;color:var(--muted);max-width:700px;line-height:1.75;margin-bottom:3rem}
+
+/* ─── STRIPE DIVIDER ─── */
+.stripe{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  max-width:var(--max);margin:0 auto;
+}
+
+/* ─── CARDS ─── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  padding:2rem;
+  transition:all .4s cubic-bezier(.25,.1,.25,1);
+}
+.card:hover{
+  border-color:rgba(26,24,20,0.15);
+  box-shadow:0 12px 40px rgba(26,24,20,0.07);
+  transform:translateY(-2px);
+}
+
+/* ─── OVERVIEW ─── */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+.overview-card{padding:2rem}
+.overview-card .num{
+  font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--accent);line-height:1;
+  margin-bottom:.5rem;
+  transition:transform .4s;
+}
+.overview-card:hover .num{transform:scale(1.08)}
+.overview-card h3{font-family:var(--serif);font-size:1.22rem;font-weight:500;margin-bottom:.6rem}
+.overview-card p{font-size:.9rem;color:var(--muted);line-height:1.65}
+
+/* ─── CONTEXT BLOCK ─── */
+.context-block{
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;
+  align-items:start;margin-top:2.5rem;
+}
+.context-block .text-col{font-size:.97rem;color:var(--muted);line-height:1.8}
+.context-block .text-col p+p{margin-top:1rem}
+.context-block .text-col strong{color:var(--ink);font-weight:500}
+.context-quote{
+  font-family:var(--serif);font-size:1.37rem;font-style:italic;
+  line-height:1.55;color:var(--ink);
+  border-left:3px solid var(--accent);
+  padding:1.5rem 0 1.5rem 2rem;
+  margin:1rem 0;
+  position:relative;
+}
+.context-quote::before{
+  content:'"';position:absolute;top:-.2rem;left:.5rem;
+  font-size:4rem;color:rgba(194,120,92,0.12);font-family:var(--serif);line-height:1;
+}
+@media(max-width:768px){.context-block{grid-template-columns:1fr}}
+
+/* ─── TIMELINE ─── */
+.timeline{position:relative;padding:2rem 0;margin-top:2rem}
+.timeline::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent,var(--border),var(--border),transparent);
+  transform:translateX(-50%);
+}
+.timeline-item{
+  position:relative;
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;
+  margin-bottom:3rem;
+  align-items:start;
+}
+.timeline-item:nth-child(even) .tl-content{grid-column:2}
+.timeline-item:nth-child(even) .tl-meta{grid-column:1;grid-row:1;text-align:right}
+.tl-dot{
+  position:absolute;left:50%;top:1.5rem;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--bg);
+  transform:translateX(-50%);z-index:2;
+  transition:all .4s;
+  box-shadow:0 0 0 3px rgba(194,120,92,0.15);
+  animation:dotPulse 2.5s ease-in-out infinite;
+}
+.timeline-item:nth-child(1) .tl-dot{animation-delay:0s}
+.timeline-item:nth-child(2) .tl-dot{animation-delay:.65s}
+.timeline-item:nth-child(3) .tl-dot{animation-delay:1.3s}
+.timeline-item:nth-child(4) .tl-dot{animation-delay:1.95s}
+.tl-dot.active{
+  width:16px;height:16px;
+  box-shadow:0 0 0 5px rgba(194,120,92,0.22);
+  animation:dotPulseStrong 2.5s ease-in-out infinite;
+}
+@keyframes dotPulseStrong{
+  0%,100%{box-shadow:0 0 0 5px rgba(194,120,92,0.22)}
+  50%{box-shadow:0 0 0 10px rgba(194,120,92,0.07)}
+}
+@keyframes dotPulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(194,120,92,0.2)}
+  50%{box-shadow:0 0 0 8px rgba(194,120,92,0.08)}
+}
+.tl-meta{padding-top:.8rem}
+.tl-year{
+  font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--accent);line-height:1;
+}
+.tl-label{font-size:.77rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-top:.3rem}
+.tl-content{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.8rem;backdrop-filter:blur(12px);
+  transition:all .4s cubic-bezier(.25,.1,.25,1);
+}
+.tl-content:hover{
+  box-shadow:0 10px 35px rgba(26,24,20,0.06);
+  transform:translateY(-2px);
+}
+.tl-content h3{font-family:var(--serif);font-size:1.32rem;font-weight:500;margin-bottom:.3rem}
+.tl-content .ec{font-size:.8rem;font-weight:600;color:var(--accent);letter-spacing:.05em;margin-bottom:.8rem;display:inline-block}
+.tl-content p{font-size:.9rem;color:var(--muted);line-height:1.65}
+.tl-content .syllabus{
+  margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border2);
+}
+.tl-content .syllabus h4{font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:.6rem}
+.tl-content .syllabus li{
+  font-size:.86rem;color:var(--muted);padding:.25rem 0;
+  list-style:none;position:relative;padding-left:1.2rem;
+  transition:color .3s;
+}
+.tl-content .syllabus li:hover{color:var(--ink)}
+.tl-content .syllabus li::before{
+  content:'→';position:absolute;left:0;color:var(--accent);font-size:.77rem;
+  transition:transform .3s;
+}
+.tl-content .syllabus li:hover::before{transform:translateX(3px)}
+@media(max-width:900px){
+  .timeline::before{left:1.5rem}
+  .timeline-item{grid-template-columns:1fr;padding-left:3rem}
+  .timeline-item:nth-child(even) .tl-content{grid-column:1}
+  .timeline-item:nth-child(even) .tl-meta{grid-column:1;grid-row:auto;text-align:left}
+  .tl-dot{left:1.5rem}
+}
+
+/* ─── ENCOUNTERS ─── */
+.encounters-hero{
+  background:linear-gradient(135deg,rgba(194,120,92,0.06),rgba(122,155,172,0.06));
+  border-radius:var(--radius-lg);
+  padding:3rem;
+  margin-top:2rem;
+  border:1px solid var(--border);
+  transition:box-shadow .5s;
+}
+.encounters-hero:hover{box-shadow:0 15px 50px rgba(26,24,20,0.06)}
+.encounters-hero .eh-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:center}
+.encounters-hero h3{font-family:var(--serif);font-size:1.82rem;font-weight:400;margin-bottom:.8rem}
+.encounters-hero p{font-size:.94rem;color:var(--muted);line-height:1.75}
+.encounters-hero p+p{margin-top:.8rem}
+.encounters-img{
+  border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/3;
+}
+.encounters-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.1,.25,1)}
+.encounters-img:hover img{transform:scale(1.05)}
+/* ─── ENCOUNTERS CAROUSEL ─── */
+.enc-carousel{
+  border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/3;position:relative;cursor:pointer;
+}
+.enc-carousel img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.2s ease-in-out, transform .7s cubic-bezier(.25,.1,.25,1);
+}
+.enc-carousel img.enc-active{opacity:1}
+.enc-carousel:hover img.enc-active{transform:scale(1.04)}
+@media(max-width:768px){.encounters-hero .eh-grid{grid-template-columns:1fr}}
+
+/* ─── IMAGE GRID ─── */
+.img-grid{
+  display:grid;gap:1rem;margin-top:2rem;
+}
+.img-grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.img-grid.cols-4{grid-template-columns:repeat(4,1fr)}
+.img-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.img-grid .img-cell{
+  border-radius:var(--radius);overflow:hidden;
+  position:relative;
+  background:var(--bg-warm);
+  cursor:pointer;
+}
+.img-grid .img-cell img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s cubic-bezier(.25,.1,.25,1),filter .4s;
+}
+.img-grid .img-cell:hover img{transform:scale(1.05);filter:brightness(1.03)}
+.img-grid .img-cell.span-2{grid-column:span 2}
+.img-grid .img-cell.span-r2{grid-row:span 2}
+.img-cell .img-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:.8rem 1rem;
+  background:linear-gradient(transparent,rgba(26,24,20,0.7));
+  color:#fff;font-size:.77rem;font-weight:500;letter-spacing:.02em;
+  opacity:0;transform:translateY(4px);
+  transition:all .35s cubic-bezier(.25,.1,.25,1);
+}
+.img-cell:hover .img-caption{opacity:1;transform:translateY(0)}
+.img-cell::after{
+  content:'⤢';position:absolute;top:.6rem;right:.6rem;
+  width:28px;height:28px;border-radius:6px;
+  background:rgba(26,24,20,0.5);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+.img-cell:hover::after{opacity:.8}
+@media(max-width:768px){
+  .img-grid.cols-3,.img-grid.cols-4{grid-template-columns:repeat(2,1fr)}
+  .img-grid .img-cell.span-2{grid-column:span 1}
+}
+
+/* ─── LIGHTBOX ─── */
+.lightbox{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(26,24,20,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  padding:2rem;
+  opacity:0;visibility:hidden;
+  transition:all .4s cubic-bezier(.25,.1,.25,1);
+  cursor:zoom-out;
+}
+.lightbox.active{opacity:1;visibility:visible}
+.lightbox img{
+  max-width:92vw;max-height:88vh;
+  object-fit:contain;border-radius:8px;
+  box-shadow:0 20px 80px rgba(0,0,0,0.4);
+  transform:scale(0.92);
+  transition:transform .4s cubic-bezier(.25,.1,.25,1);
+}
+.lightbox.active img{transform:scale(1)}
+.lightbox-close{
+  position:absolute;top:1.5rem;right:1.5rem;
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.25);transform:scale(1.1)}
+.lightbox-caption{
+  position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  color:rgba(255,255,255,0.7);font-size:.82rem;text-align:center;max-width:600px;
+}
+
+/* ─── METHODOLOGY ─── */
+.method-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
+.method-card{text-align:center;padding:2.5rem 1.5rem}
+.method-card .method-num{
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(194,120,92,0.1);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.35rem;font-weight:500;
+  margin-bottom:1rem;
+  transition:all .4s;
+}
+.method-card:hover .method-num{
+  background:var(--accent);color:#fff;
+  transform:scale(1.1);
+  box-shadow:0 6px 20px rgba(194,120,92,0.25);
+}
+.method-card h3{font-family:var(--serif);font-size:1.17rem;font-weight:500;margin-bottom:.6rem}
+.method-card p{font-size:.87rem;color:var(--muted);line-height:1.65}
+@media(max-width:768px){.method-cols{grid-template-columns:1fr}}
+
+/* ─── FINDINGS ─── */
+.findings-block{
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;
+}
+.finding-card{padding:2rem;position:relative;overflow:hidden}
+.finding-card::before{
+  content:'';position:absolute;top:0;left:0;width:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent3));
+  transition:width .5s cubic-bezier(.25,.1,.25,1);
+}
+.finding-card:hover::before{width:100%}
+.finding-card h3{font-family:var(--serif);font-size:1.17rem;font-weight:500;margin-bottom:.6rem}
+.finding-card p{font-size:.9rem;color:var(--muted);line-height:1.7}
+.finding-card .finding-tag{
+  display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);background:rgba(194,120,92,0.08);
+  padding:.25rem .6rem;border-radius:4px;margin-bottom:.8rem;
+  transition:all .3s;
+}
+.finding-card:hover .finding-tag{background:rgba(194,120,92,0.15)}
+@media(max-width:768px){.findings-block{grid-template-columns:1fr}}
+
+/* ─── P+ARTS / CONFERENCE ─── */
+.conference-banner{
+  position:relative;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin-top:2rem;
+  min-height:400px;
+  display:flex;align-items:flex-end;
+}
+.conference-banner img{
+  position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 8s cubic-bezier(.25,.1,.25,1);
+}
+.conference-banner:hover img{transform:scale(1.04)}
+.conference-banner .cb-overlay{
+  position:relative;z-index:2;
+  width:100%;padding:3rem;
+  background:linear-gradient(transparent,rgba(26,24,20,0.85));
+  color:#fff;
+}
+.conference-banner .cb-overlay h3{font-family:var(--serif);font-size:2.02rem;font-weight:400;margin-bottom:.5rem}
+.conference-banner .cb-overlay p{font-size:.92rem;opacity:.85;max-width:600px;line-height:1.7}
+.conference-details{
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem;
+}
+.conf-text{font-size:.94rem;color:var(--muted);line-height:1.8}
+.conf-text p+p{margin-top:1rem}
+.conf-text strong{color:var(--ink);font-weight:500}
+.conf-sidebar .card{margin-bottom:1rem}
+.conf-sidebar .card h4{font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:.8rem}
+.conf-sidebar .card .detail-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:.4rem 0;border-bottom:1px solid var(--border2);
+  font-size:.87rem;
+  transition:background .3s;
+}
+.conf-sidebar .card .detail-row:hover{background:rgba(194,120,92,0.03)}
+.conf-sidebar .card .detail-row:last-child{border-bottom:none}
+.conf-sidebar .card .detail-row .label{color:var(--muted)}
+.conf-sidebar .card .detail-row .value{font-weight:500;color:var(--ink)}
+@media(max-width:768px){.conference-details{grid-template-columns:1fr}}
+
+/* ─── PARAMETERS ─── */
+.params-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
+.param-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:2rem;position:relative;overflow:hidden;
+  transition:all .4s cubic-bezier(.25,.1,.25,1);
+}
+.param-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(26,24,20,0.07)}
+.param-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent3));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s cubic-bezier(.25,.1,.25,1);
+}
+.param-card:hover::before{transform:scaleX(1)}
+.param-card .param-num{
+  font-family:var(--serif);font-size:3rem;font-weight:300;color:rgba(194,120,92,0.15);
+  position:absolute;top:.5rem;right:1rem;line-height:1;
+  transition:color .4s;
+}
+.param-card:hover .param-num{color:rgba(194,120,92,0.25)}
+.param-card h3{font-family:var(--serif);font-size:1.17rem;font-weight:500;margin-bottom:.6rem}
+.param-card p{font-size:.87rem;color:var(--muted);line-height:1.65}
+@media(max-width:768px){.params-grid{grid-template-columns:1fr}}
+
+/* ─── STUDENT WORK GALLERY ─── */
+.student-gallery{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:2rem;
+}
+.student-card{
+  border-radius:var(--radius);overflow:hidden;
+  background:var(--surface);border:1px solid var(--border);
+  transition:all .4s cubic-bezier(.25,.1,.25,1);
+  cursor:pointer;
+}
+.student-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(26,24,20,0.07)}
+.student-card .sc-img{aspect-ratio:16/10;overflow:hidden}
+.student-card .sc-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.1,.25,1)}
+.student-card:hover .sc-img img{transform:scale(1.06)}
+.student-card .sc-body{padding:1rem 1.2rem}
+.student-card .sc-body h4{font-family:var(--serif);font-size:1.02rem;font-weight:500;margin-bottom:.3rem}
+.student-card .sc-body p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* ─── DISSEMINATION ─── */
+.diss-list{margin-top:2rem}
+.diss-item{
+  display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem;
+  align-items:center;
+  padding:1.2rem 0;border-bottom:1px solid var(--border2);
+  transition:all .3s;
+}
+.diss-item:hover{padding-left:.5rem;background:rgba(194,120,92,0.02)}
+.diss-item:last-child{border-bottom:none}
+.diss-type{
+  font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:var(--accent);
+  padding:.3rem .7rem;border-radius:4px;white-space:nowrap;
+  transition:transform .3s;
+}
+.diss-item:hover .diss-type{transform:scale(1.05)}
+.diss-type.conf{background:var(--accent3)}
+.diss-type.pub{background:var(--accent2)}
+.diss-type.cur{background:#8b7bb5}
+.diss-info h4{font-size:.97rem;font-weight:500;margin-bottom:.15rem}
+.diss-info p{font-size:.84rem;color:var(--muted)}
+.diss-date{font-size:.84rem;color:var(--light);white-space:nowrap}
+
+/* ─── FOOTER ─── */
+footer{
+  padding:4rem clamp(1.5rem,5vw,4rem) 3rem;
+  text-align:center;
+  border-top:1px solid var(--border);
+}
+footer .f-brand{font-family:var(--serif);font-size:1.52rem;font-weight:400;margin-bottom:.5rem}
+footer .f-brand em{font-style:italic;color:var(--accent)}
+footer p{font-size:.84rem;color:var(--light);margin-top:.3rem}
+footer .f-links{display:flex;justify-content:center;gap:1.5rem;margin-top:1.5rem}
+footer .f-links a{
+  font-size:.82rem;color:var(--muted);text-decoration:none;
+  transition:all .3s;position:relative;
+}
+footer .f-links a::after{
+  content:'';position:absolute;bottom:-.2rem;left:0;width:0;height:1px;
+  background:var(--accent);transition:width .3s;
+}
+footer .f-links a:hover{color:var(--accent)}
+footer .f-links a:hover::after{width:100%}
+
+/* ─── REVEAL ANIMATIONS ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.25,.1,.25,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ─── SCROLL PROGRESS ─── */
+.scroll-progress{
+  position:fixed;top:var(--nav-h);left:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent3));
+  z-index:101;transition:width .15s;width:0%;
+}
+
+/* ─── STAGGER CHILDREN ─── */
+.stagger-children > *{opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.25,.1,.25,1)}
+.stagger-children.visible > *:nth-child(1){transition-delay:.05s}
+.stagger-children.visible > *:nth-child(2){transition-delay:.1s}
+.stagger-children.visible > *:nth-child(3){transition-delay:.15s}
+.stagger-children.visible > *:nth-child(4){transition-delay:.2s}
+.stagger-children.visible > *:nth-child(5){transition-delay:.25s}
+.stagger-children.visible > *:nth-child(6){transition-delay:.3s}
+.stagger-children.visible > *:nth-child(7){transition-delay:.35s}
+.stagger-children.visible > *:nth-child(8){transition-delay:.4s}
+.stagger-children.visible > *{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">×</button>
+  <img src="" alt="">
+  <div class="lightbox-caption"></div>
+</div>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a href="#" class="nav-brand">AT-LAB <span>II</span></a>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#courses">Courses</a>
+    <a href="#encounters">Encounters</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#parts">P+ARTS</a>
+    <a href="#students">Student Work</a>
+    <a href="#dissemination">Dissemination</a>
+  </div>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="top">
+  <div class="hero-label">Professional Doctorate Portfolio</div>
+  <h1>Teaching as <em>Artistic Research</em></h1>
+  <p class="hero-sub">
+    Developing AI literacy as a critical and situated mode of artistic research through pedagogical practice at the Frank Mohr Institute.
+  </p>
+  <div class="hero-meta">
+    <span><strong>Researcher</strong> Agustín Martínez Caram</span>
+    <span><strong>Programme</strong> PD Kunst + Creatief</span>
+    <span><strong>Institution</strong> Hanze University of Applied Sciences</span>
+    <span><strong>Lectorate</strong> Image in Context</span>
+    <span><strong>Period</strong> 2023 – 2026</span>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ OVERVIEW ════════ -->
+<section id="overview">
+  <div class="section-inner">
+    <div class="section-label reveal">Teaching &amp; Research Nexus</div>
+    <h2 class="section-title reveal">Overview</h2>
+    <p class="section-lead reveal">
+      Within the Professional Doctorate Kunst + Creatief, teaching is not ancillary to research — it is a site of research. This portfolio documents a four-year trajectory of developing, iterating, and studying an AI course for master's students in fine arts and design.
+    </p>
+
+    <div class="context-block reveal">
+      <div class="text-col">
+        <p>
+          Commissioned by the Frank Mohr Institute — the master's division of Minerva Art Academy at Hanze University — I developed and taught a series of courses on <strong>AI for creative practice</strong> across four programmes: MADtech (Media, Art, Design &amp; Technology), iRap (Inter-relational Art Practices), MAPS (Materials and Practices), and Painting.
+        </p>
+        <p>
+          This pedagogical practice became integral to my research within the <strong>Lectorate Image in Context</strong>, allowing me to investigate how emerging artists define, engage with, and critically examine artificial intelligence — both as a tool and as a subject of artistic inquiry.
+        </p>
+        <p>
+          The teaching-research link operated through a <strong>triangulated methodology</strong>: structured questionnaires administered before and after the course, curatorial reflection during the <em>Encounters in Artistic Research</em> symposium, and ongoing dialogue through studio visits and group discussions.
+        </p>
+      </div>
+      <div>
+        <div class="context-quote">
+          AI literacy can be reframed: we can look at artists as interpreters of algorithmic systems, treating literacy not just as knowledge but as empowered critical engagement.
+        </div>
+        <div class="overview-grid" style="margin-top:1.5rem">
+          <div class="card overview-card">
+            <div class="num">4</div>
+            <h3>Course Iterations</h3>
+            <p>Evolving from a 1EC introduction to a comprehensive 2EC programme and back to a focused 1EC format.</p>
+          </div>
+          <div class="card overview-card">
+            <div class="num">4</div>
+            <h3>Master Programmes</h3>
+            <p>MADtech, iRap, MAPS, and Painting — engaging students across diverse artistic practices.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ COURSE EVOLUTION ════════ -->
+<section id="courses">
+  <div class="section-inner">
+    <div class="section-label reveal">Course Development</div>
+    <h2 class="section-title reveal">Course Evolution &amp; Syllabi</h2>
+    <p class="section-lead reveal">
+      Each iteration refined the pedagogical approach, expanding both the scope and the research methodology embedded within the course structure.
+    </p>
+
+    <div class="timeline">
+      <!-- V.1 -->
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">
+          <div class="tl-year">2023</div>
+          <div class="tl-label">Version 1</div>
+        </div>
+        <div class="tl-content">
+          <h3>Introduction to AI for Creative Practice</h3>
+          <span class="ec">1 EC · Frank Mohr Institute</span>
+          <p>The inaugural course introduced master's students to AI as a creative tool and subject of critical inquiry. Focused on building foundational understanding of machine learning, generative models, and their implications for artistic practice.</p>
+          <div class="syllabus">
+            <h4>Syllabus</h4>
+            <ul>
+              <li>Introduction to AI: history, concepts, and current landscape</li>
+              <li>Generative AI tools and hands-on experimentation</li>
+              <li>Critical perspectives on AI in art and society</li>
+              <li>Final project: AI-informed artwork or proposal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- V.2 -->
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">
+          <div class="tl-year">2024</div>
+          <div class="tl-label">Version 2</div>
+        </div>
+        <div class="tl-content">
+          <h3>AI, in, within and around your practice.</h3>
+          <span class="ec">2 EC · Discursive AI · Frank Mohr Institute (MADtech, iRap, MAPS, Painting)</span>
+          <p>Expanded course open to all four master's programmes, shifting toward a discursive, practice-embedded approach. Introduced the structured questionnaire as a research instrument administered at the start and end of the course, beginning the triangulated research methodology.</p>
+          <div class="syllabus">
+            <h4>Syllabus</h4>
+            <ul>
+              <li>What is AI? Definitions, history, and the Turing Test</li>
+              <li>Machine learning, neural networks, and deep learning</li>
+              <li>Large Language Models: how they work and what they mean</li>
+              <li>AI and bias: ethical dimensions and artistic responses</li>
+              <li>Image generation: diffusion models and creative workflows</li>
+              <li>Prompt engineering and creative AI tools</li>
+              <li>Studio practice: developing AI-integrated projects</li>
+              <li>Final presentations and group critique</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- V.3 -->
+      <div class="timeline-item reveal">
+        <div class="tl-dot active"></div>
+        <div class="tl-meta">
+          <div class="tl-year">2025</div>
+          <div class="tl-label">Version 3</div>
+        </div>
+        <div class="tl-content">
+          <h3>AI, in, within and around your practice.</h3>
+          <span class="ec">2 EC · Discursive AI · Frank Mohr Institute (MADtech, iRap, MAPS, Painting)</span>
+          <p>Second iteration of the discursive AI course, with a fully refined triangulated research methodology integrating data collection directly into the course structure. Results from this iteration formed the basis of the P+ARTS Naples paper.</p>
+          <div class="syllabus">
+            <h4>Syllabus</h4>
+            <ul>
+              <li><strong>Session I:</strong> AI Concepts &amp; Critical Framework — what is intelligence, data, learning? Addressing conceptual ambiguity. Pre-course questionnaire</li>
+              <li><strong>Session II:</strong> Creative AI Workflows — hands-on with generative tools, Creative AI Cards as classroom methodology, prompt design and image generation</li>
+              <li><strong>Session III:</strong> ComfyUI Workshop &amp; Project Development — advanced workflows, node-based generation, studio practice integration</li>
+              <li>Final presentations, post-course questionnaire, selection for Encounters symposium</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- V.4 -->
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">
+          <div class="tl-year">2026</div>
+          <div class="tl-label">Version 4</div>
+        </div>
+        <div class="tl-content">
+          <h3>Creative AI Workflows</h3>
+          <span class="ec">1 EC · 3 Sessions · April 2026 · Frank Mohr Institute</span>
+          <p>The final iteration: a focused, practice-oriented course consolidating the insights from three years of teaching and research. Emphasis on hands-on creative workflows and autonomous AI-integrated artistic practice.</p>
+          <div class="syllabus">
+            <h4>Syllabus</h4>
+            <ul>
+              <li><strong>Session I:</strong> AI in Artistic Practice — contextual introduction, current state of AI in the arts, critical discussion</li>
+              <li><strong>Session II:</strong> Designing with AI — Creative AI Cards methodology, collaborative exploration, concept development</li>
+              <li><strong>Session III:</strong> ComfyUI Workshop — node-based AI workflows, practical implementation, project development</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Course Session Photos -->
+<section style="padding-top:0">
+  <div class="section-inner">
+    <div class="section-label reveal">In the Classroom</div>
+    <div class="img-grid cols-3 reveal stagger-children" style="margin-top:1rem">
+      <div class="img-cell span-2" style="aspect-ratio:16/9" data-lightbox>
+        <img src="portfolio-images/screenshot_2025-03-18_17.51.27 Large.jpeg" alt="Course session — AI concepts overview" loading="lazy">
+        <div class="img-caption">Session I, 2025 — AI Concepts &amp; Critical Framework</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:3/4" data-lightbox>
+        <img src="portfolio-images/IMG_7602.jpg" alt="Student presentation on screen" loading="lazy">
+        <div class="img-caption">Student presentation — machine learning workflow</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2026-04-17_00.05.33 Large.jpeg" alt="Course slide — deep learning" loading="lazy">
+        <div class="img-caption">Teaching material — neural networks and deep learning</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2025-03-18_17.54.48 Large.jpeg" alt="Course session material" loading="lazy">
+        <div class="img-caption">Course session material, 2025</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2025-03-18_18.06.02 Large.jpeg" alt="Course session — hands-on" loading="lazy">
+        <div class="img-caption">Hands-on exploration in the classroom</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ ENCOUNTERS ════════ -->
+<section id="encounters">
+  <div class="section-inner">
+    <div class="section-label reveal">Curation as Research</div>
+    <h2 class="section-title reveal">Encounters in Artistic Research</h2>
+    <p class="section-lead reveal">
+      A symposium organized in collaboration with the Lectorate Image in Context, where selected student works from the AI course were curated and presented as artistic research — extending the pedagogical space into an epistemic one.
+    </p>
+
+    <div class="encounters-hero reveal">
+      <div class="eh-grid">
+        <div>
+          <h3>Curation as Epistemic Practice</h3>
+          <p>
+            After each course iteration, a selection of student works was invited to be presented at the <em>Encounters in Artistic Research</em> symposium — an annual event organized with the Lectorate Image in Context at the Minerva Art Academy.
+          </p>
+          <p>
+            This curatorial step was not merely presentational. It functioned as a second phase of research: through dialogue with students, fellow researchers, and an audience, the works were re-examined as contributions to artistic research on AI. The curation process itself became a method of inquiry — what the P+ARTS paper frames as <em>curation as research</em>.
+          </p>
+          <p>
+            Student works addressed themes including algorithmic opacity, speculative futures, embodied performance with machine learning, feminist critiques of AI-generated body images, and the creative potential of older AI systems in painting practice.
+          </p>
+        </div>
+        <div class="enc-carousel">
+          <img src="portfolio-images/IMG_4301.jpg" alt="Encounters in Artistic Research symposium" loading="lazy">
+          <img src="portfolio-images/IMG_4289.jpg" alt="Student works at Encounters symposium" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="params-grid reveal stagger-children" style="margin-top:2rem">
+      <div class="param-card">
+        <div class="param-num">01</div>
+        <h3>Curatorial Dialogue</h3>
+        <p>Students engaged in extended conversation about their works' relationship to AI, positioning them not just as art objects but as research contributions that interrogate algorithmic systems.</p>
+      </div>
+      <div class="param-card">
+        <div class="param-num">02</div>
+        <h3>Interdisciplinary Exchange</h3>
+        <p>Bringing together students from MADtech, iRap, MAPS, and Painting created productive friction between technology-native and traditional practices, revealing diverse approaches to AI engagement.</p>
+      </div>
+      <div class="param-card">
+        <div class="param-num">03</div>
+        <h3>Research Integration</h3>
+        <p>The symposium provided a third data point in the triangulated methodology — alongside questionnaires and studio visits — offering public, dialogic reflection on the teaching-research process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ METHODOLOGY ════════ -->
+<section id="methodology">
+  <div class="section-inner">
+    <div class="section-label reveal">Research Design</div>
+    <h2 class="section-title reveal">Methodology &amp; Findings</h2>
+    <p class="section-lead reveal">
+      A triangulated approach combining structured questionnaires, curatorial reflection, and dialogue-based analysis to investigate how emerging artists conceptualize and engage with AI.
+    </p>
+
+    <div class="method-cols reveal stagger-children">
+      <div class="card method-card">
+        <div class="method-num">1</div>
+        <h3>Structured Questionnaire</h3>
+        <p>Administered at the outset and conclusion of each course, yielding both quantitative ratings and qualitative responses. Tracks shifts in how students define, use, and imagine AI across the course duration.</p>
+      </div>
+      <div class="card method-card">
+        <div class="method-num">2</div>
+        <h3>Curatorial Reflection</h3>
+        <p>Selected student works exhibited at the Encounters symposium, where curation functions as epistemic practice. Works are examined through dialogue as research contributions addressing algorithmic opacity, speculative futures, and critical embodiment.</p>
+      </div>
+      <div class="card method-card">
+        <div class="method-num">3</div>
+        <h3>Dialogue-Based Analysis</h3>
+        <p>Studio visits and group discussions throughout the course provide ongoing qualitative data. These dialogues capture the evolving relationship between students' personal AI use and their developing artistic practice.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem">
+      <h3 class="reveal" style="font-family:var(--serif);font-size:1.52rem;font-weight:400;margin-bottom:1.5rem">Key Findings</h3>
+      <div class="findings-block reveal stagger-children">
+        <div class="card finding-card">
+          <div class="finding-tag">Conceptual Ambiguity</div>
+          <h3>The Gap Between Use and Understanding</h3>
+          <p>Students frequently used AI personally (predictive text, image generation) but showed hesitant and exploratory engagement in artistic practice. Their definitions of AI ranged from algorithmic to metaphorical, revealing a pervasive conceptual ambiguity that became the starting point for pedagogical intervention.</p>
+        </div>
+        <div class="card finding-card">
+          <div class="finding-tag">Pragmatic Stance</div>
+          <h3>Beyond Dystopia and Utopia</h3>
+          <p>Students rejected both dystopian and utopian AI narratives in favour of pragmatic views. They wanted to use AI as a tool without subscribing to either Silicon Valley techno-optimism or apocalyptic scenarios — supporting a grounded, critical approach to emerging technologies.</p>
+        </div>
+        <div class="card finding-card">
+          <div class="finding-tag">Imaginative Desires</div>
+          <h3>AI as Creative Partner</h3>
+          <p>Students expressed desires for AI that exceeded current technical literacy — such as creative partnership, emotional support, or systemic disruption. These imaginative projections underscore the need to embed critical literacy throughout the learning process.</p>
+        </div>
+        <div class="card finding-card">
+          <div class="finding-tag">Empowered Literacy</div>
+          <h3>Artists as Interpreters</h3>
+          <p>The research proposes reframing AI literacy to position artists not as users or co-creators of AI, but as interpreters of algorithmic systems. This shifts focus toward epistemological inquiry and participatory critique, enabling confident and reflexive engagement with AI.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ P+ARTS NAPLES ════════ -->
+<section id="parts">
+  <div class="section-inner">
+    <div class="section-label reveal">Academic Dissemination</div>
+    <h2 class="section-title reveal">P+ARTS — Unframing Knowledge</h2>
+    <p class="section-lead reveal">
+      International conference on Artistic Research at the Accademia di Belle Arti di Napoli, October 2025. Presentation of the research paper connecting teaching practice to artistic research methodology.
+    </p>
+
+    <div class="conference-banner reveal">
+      <img src="portfolio-images/IMG_0493.jpg" alt="P+ARTS Unframing Knowledge Conference — Accademia di Belle Arti di Napoli" loading="lazy">
+      <div class="cb-overlay">
+        <h3>Unframing Knowledge</h3>
+        <p>Artistic Research Beyond Theory and Practice — Accademia di Belle Arti di Napoli, 27–29 October 2025</p>
+      </div>
+    </div>
+
+    <div class="conference-details reveal">
+      <div class="conf-text">
+        <p>
+          <strong>From Conceptual Ambiguity to Critical Engagement: AI Literacy as Artistic Research</strong> — this paper presents AI literacy as a critical and situated mode of Artistic Research, emerging from pedagogical experimentation and qualitative research within the master's-level AI course at Frank Mohr Institute.
+        </p>
+        <p>
+          The contribution is based on the triangulated methodology combining the structured questionnaire, curatorial reflection on student artworks at the Encounters symposium, and dialogue-based analysis. Conducted during the third iteration of the course, the study investigates how emerging artists define, engage with, and imagine artificial intelligence in both personal and creative contexts.
+        </p>
+        <p>
+          The paper proposes three key parameters for a literacy-driven, participatory methodology: (1) begin with conceptual clarification; (2) embed critical literacy throughout the learning process; and (3) use curation as research. These strategies aim to move artists from hesitant experimentation to confident, critical, and reflexive engagement with AI as both medium and subject of inquiry.
+        </p>
+      </div>
+      <div class="conf-sidebar">
+        <div class="card">
+          <h4>Paper Details</h4>
+          <div class="detail-row">
+            <span class="label">Conference</span>
+            <span class="value">P+ARTS 2025</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Theme</span>
+            <span class="value">Unframing Knowledge</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Track</span>
+            <span class="value">PhD Track 02</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Topic</span>
+            <span class="value">AR and AI</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Date</span>
+            <span class="value">28 Oct 2025</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Location</span>
+            <span class="value">Naples, Italy</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Keywords</span>
+            <span class="value" style="font-size:.8rem">AI literacy, artistic research, critical pedagogy, human-centred AI</span>
+          </div>
+        </div>
+        <div class="card">
+          <h4>Three Proposed Parameters</h4>
+          <div class="detail-row">
+            <span class="label">1.</span>
+            <span class="value">Conceptual Clarification</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">2.</span>
+            <span class="value">Continuous Critical Reflection</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">3.</span>
+            <span class="value">Curation as Method of Inquiry</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conference photos -->
+    <div class="img-grid cols-3 reveal stagger-children" style="margin-top:2.5rem">
+      <div class="img-cell" style="aspect-ratio:4/3" data-lightbox>
+        <img src="portfolio-images/IMG_2303.jpg" alt="P+ARTS Conference venue — Accademia di Belle Arti di Napoli" loading="lazy">
+        <div class="img-caption">Accademia di Belle Arti di Napoli</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:4/3" data-lightbox>
+        <img src="portfolio-images/IMG_2248.jpeg" alt="Conference schedule — P+ARTS presentation" loading="lazy">
+        <div class="img-caption">Paper presentation details</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:4/3" data-lightbox>
+        <img src="portfolio-images/MG_4301.jpg" alt="Conference audience" loading="lazy">
+        <div class="img-caption">Conference proceedings, Day 2</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:4/3" data-lightbox>
+        <img src="portfolio-images/MPL04278.jpg" alt="Conference presentation" loading="lazy">
+        <div class="img-caption">Presentation session</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:4/3" data-lightbox>
+        <img src="portfolio-images/MPL04339.jpg" alt="Conference panel" loading="lazy">
+        <div class="img-caption">Panel discussion</div>
+      </div>
+      <div class="img-cell" style="aspect-ratio:4/3" data-lightbox>
+        <img src="portfolio-images/PGA_DSC_0049.jpg" alt="Conference venue" loading="lazy">
+        <div class="img-caption">Unframing Knowledge conference</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ STUDENT WORK ════════ -->
+<section id="students">
+  <div class="section-inner">
+    <div class="section-label reveal">Course Outcomes</div>
+    <h2 class="section-title reveal">Student Work</h2>
+    <p class="section-lead reveal">
+      A selection of student projects developed during the AI courses, demonstrating diverse artistic engagements with AI across the four master's programmes — from painting and performance to digital art and machine learning systems.
+    </p>
+
+    <div class="student-gallery reveal stagger-children">
+      <div class="student-card" data-lightbox>
+        <div class="sc-img">
+          <img src="portfolio-images/screenshot_2024-06-03_12.38.28 Large.jpeg" alt="Student project — AI and fashion" loading="lazy">
+        </div>
+        <div class="sc-body">
+          <h4>AI &amp; Body Image</h4>
+          <p>Investigating how AI affects body representation, using generative models to critique fashion imagery — 2024 cohort.</p>
+        </div>
+      </div>
+      <div class="student-card" data-lightbox>
+        <div class="sc-img">
+          <img src="portfolio-images/screenshot_2024-06-03_12.42.32 Large.jpeg" alt="Student project — ComfyUI workflow" loading="lazy">
+        </div>
+        <div class="sc-body">
+          <h4>Creative AI Workflows</h4>
+          <p>Exploring node-based generative systems through ComfyUI to develop new visual languages — 2024 cohort.</p>
+        </div>
+      </div>
+      <div class="student-card" data-lightbox>
+        <div class="sc-img">
+          <img src="portfolio-images/screenshot_2024-06-03_12.47.14 Large.jpeg" alt="Student project presentation" loading="lazy">
+        </div>
+        <div class="sc-body">
+          <h4>Algorithmic Bias Investigation</h4>
+          <p>Using non-technological means to expose inherent biases across proprietary AI models — 2024 cohort.</p>
+        </div>
+      </div>
+      <div class="student-card" data-lightbox>
+        <div class="sc-img">
+          <img src="portfolio-images/screenshot_2024-06-03_12.51.22 Large.jpeg" alt="Student project" loading="lazy">
+        </div>
+        <div class="sc-body">
+          <h4>AI in Painting Practice</h4>
+          <p>Exploring dialogue between traditional painting and older AI systems to create new aesthetic vocabularies — 2024 cohort.</p>
+        </div>
+      </div>
+      <div class="student-card" data-lightbox>
+        <div class="sc-img">
+          <img src="portfolio-images/IMG_7616.jpg" alt="Student presentation 2025" loading="lazy">
+        </div>
+        <div class="sc-body">
+          <h4>Performance &amp; Machine Learning</h4>
+          <p>Developing ML algorithms to investigate how AI perceives biological and artificial life growth, embodied through performance — 2025 cohort.</p>
+        </div>
+      </div>
+      <div class="student-card" data-lightbox>
+        <div class="sc-img">
+          <img src="portfolio-images/IMG_7623.jpg" alt="Student presentation 2025" loading="lazy">
+        </div>
+        <div class="sc-body">
+          <h4>Speculative Futures</h4>
+          <p>Using advanced AI systems in 3D modelling to investigate how AI understands human emotions and micro-expressions — 2025 cohort.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- More student work images -->
+    <div class="img-grid cols-4 reveal stagger-children" style="margin-top:2rem">
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/IMG_7626.jpg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-03_13.01.14 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-03_13.07.04 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-03_13.26.30 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-04_15.05.10 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-04_15.26.24 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-04_15.34.18 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+      <div class="img-cell" style="aspect-ratio:16/10" data-lightbox>
+        <img src="portfolio-images/screenshot_2024-06-04_15.38.22 Large.jpeg" alt="Student work" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ DISSEMINATION ════════ -->
+<section id="dissemination">
+  <div class="section-inner">
+    <div class="section-label reveal">Portfolio Activities</div>
+    <h2 class="section-title reveal">Dissemination &amp; Activities</h2>
+    <p class="section-lead reveal">
+      An overview of teaching, research dissemination, and related activities undertaken throughout the Professional Doctorate trajectory.
+    </p>
+
+    <div class="diss-list reveal stagger-children">
+      <div class="diss-item">
+        <span class="diss-type">Teaching</span>
+        <div class="diss-info">
+          <h4>AI for Creative Practice — v.1</h4>
+          <p>1 EC course · Frank Mohr Institute (MADtech)</p>
+        </div>
+        <span class="diss-date">2023</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type">Teaching</span>
+        <div class="diss-info">
+          <h4>AI, in, within and around your practice. — v.2</h4>
+          <p>2 EC · Discursive AI · Frank Mohr Institute (MADtech, iRap, MAPS, Painting) · Introduced research questionnaire</p>
+        </div>
+        <span class="diss-date">2024</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type cur">Curation</span>
+        <div class="diss-info">
+          <h4>Encounters in Artistic Research — Symposium</h4>
+          <p>Curated student works from AI course · Lectorate Image in Context · Minerva Art Academy</p>
+        </div>
+        <span class="diss-date">Sep 2024</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type conf">Conference</span>
+        <div class="diss-info">
+          <h4>ELIA Biennial 2024 — Arts Plural</h4>
+          <p>Attended with focus on approaches to teaching AI in art and design education · NABA, Milan · 20–23 Nov 2024</p>
+        </div>
+        <span class="diss-date">Nov 2024</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type">Teaching</span>
+        <div class="diss-info">
+          <h4>AI, in, within and around your practice. — v.3</h4>
+          <p>2 EC · Discursive AI · Frank Mohr Institute (MADtech, iRap, MAPS, Painting) · Full triangulated methodology</p>
+        </div>
+        <span class="diss-date">2025</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type conf">Conference</span>
+        <div class="diss-info">
+          <h4>P+ARTS — Unframing Knowledge</h4>
+          <p>Paper presentation: "From Conceptual Ambiguity to Critical Engagement" · Accademia di Belle Arti di Napoli</p>
+        </div>
+        <span class="diss-date">Oct 2025</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type pub">Publication</span>
+        <div class="diss-info">
+          <h4>From Conceptual Ambiguity to Critical Engagement: AI Literacy as Artistic Research</h4>
+          <p>Paper — publication forthcoming</p>
+        </div>
+        <span class="diss-date">2025–26</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type">Teaching</span>
+        <div class="diss-info">
+          <h4>Creative AI Workflows — v.4</h4>
+          <p>1 EC course · Frank Mohr Institute · Final iteration</p>
+        </div>
+        <span class="diss-date">Apr 2026</span>
+      </div>
+      <div class="diss-item">
+        <span class="diss-type pub">Research</span>
+        <div class="diss-info">
+          <h4>Student Involvement — Lectorate Image in Context</h4>
+          <p>Coordination of student participation in lectorate research activities (KCKS)</p>
+        </div>
+        <span class="diss-date">2023–26</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="f-brand">AT-LAB <em>II</em></div>
+  <p>Teaching as Artistic Research — Professional Doctorate Portfolio</p>
+  <p>Agustín Martínez Caram · Hanze University of Applied Sciences · Lectorate Image in Context</p>
+  <div class="f-links">
+    <a href="https://www.martinezcaram.com" target="_blank">martinezcaram.com</a>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+// ─── NAV SCROLL ───
+const nav = document.getElementById('nav');
+const progress = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  if (h > 0) progress.style.width = (window.scrollY / h * 100) + '%';
+});
+
+// ─── ACTIVE NAV ───
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// ─── REVEAL + STAGGER ───
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => revealObs.observe(el));
+
+// ─── LIGHTBOX ───
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox.querySelector('img');
+const lbCaption = lightbox.querySelector('.lightbox-caption');
+const lbClose = lightbox.querySelector('.lightbox-close');
+
+document.querySelectorAll('[data-lightbox]').forEach(el => {
+  el.addEventListener('click', () => {
+    const img = el.querySelector('img');
+    const caption = el.querySelector('.img-caption, .sc-body h4');
+    if (!img) return;
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCaption.textContent = caption ? caption.textContent : '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ── Encounters image carousel ──────────────────────────────────────────────
+  document.querySelectorAll('.enc-carousel').forEach(car => {
+    const imgs = Array.from(car.querySelectorAll('img'));
+    if (!imgs.length) return;
+    let current = 0;
+    imgs[0].classList.add('enc-active');
+    setInterval(() => {
+      imgs[current].classList.remove('enc-active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('enc-active');
+    }, 4500);
+    car.addEventListener('click', () => {
+      const active = car.querySelector('img.enc-active') || imgs[0];
+      lbImg.src = active.src;
+      lbImg.alt = active.alt;
+      lbCaption.textContent = active.alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+</script>
+</body>
+</html>
